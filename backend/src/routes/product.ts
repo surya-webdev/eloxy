@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import express, { Request, Response, Application, Router } from "express";
+import { Request, Response, Router } from "express";
 
 const prisma = new PrismaClient();
 
@@ -11,9 +11,10 @@ product.get("/", async (req: Request, res: Response) => {
   res.json({ response });
 });
 
-product.get("/filter", async (req: Request, res: Response): Promise<any> => {
-  // const query = req.query
-  const filters = req.query;
+product.use("/filter", async (req: Request, res: Response): Promise<any> => {
+  //
+
+  const filters = req.query || "all";
 
   if (
     filters.category === "footwear" ||
@@ -25,15 +26,22 @@ product.get("/filter", async (req: Request, res: Response): Promise<any> => {
         category: filters.category,
       },
     });
+
+    if (response.length > 0) return res.json({ response });
+
+    return res.status(411).json({ message: "no item found" });
+  }
+
+  if (filters.category) {
+    const response = await prisma.product.findMany({});
+
     return res.json({ response });
   }
 
   return res.json({ message: "No search term provided" });
-
-  //
 });
 
-product.get("/:id", async (req: Request, res: Response) => {
+product.get("/view/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
 
   if (!id) throw Error("Product is not found");
