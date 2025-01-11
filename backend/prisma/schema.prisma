@@ -8,20 +8,22 @@ datasource db {
 }
 
 model User {
-  id                   String                   @id @unique @default(uuid())
-  email                String                   @unique
-  name                 String                   @unique                 
+  id                   String                  @id @unique @default(uuid())
+  email                String                  @unique
+  name                 String                  @unique                 
   password             String                   
   image                String?          
   cart                 Cart[]
+  adress               Address[]
+  order                Order[]
 }
 
 model Cart {
-  id                  String                  @id @unique @default(uuid())
+  id                  String                 @id @unique @default(uuid())
   productId           String
-  product             Product                 @relation(fields: [productId] , references: [id])
+  product             Product                @relation(fields: [productId] , references: [id])
   userId              String
-  user                User                    @relation(fields: [userId] , references: [id])
+  user                User                   @relation(fields: [userId] , references: [id])
 }
 
 model Product {
@@ -31,9 +33,34 @@ model Product {
   price            Int                        
   image            String
   description      String
-  bestsellor       Boolean                    @default(false)
-  category         categoryType               @default(all)
-  cart              Cart[]
+  bestsellor       Boolean                   @default(false)
+  category         categoryType              @default(all)
+  cart             Cart[]
+  order            Order[]
+}
+
+
+
+model Address {
+id                 String                  @id @unique @default(uuid())
+housenumber        String
+contact            String    
+street             String
+city               String
+landmark           String         
+paymentMode        paymentoption
+userId             String
+user               User                     @relation(fields: [userId], references: [id])
+}
+
+model Order {
+id                 String                   @id @unique @default(uuid())
+productId          String                    
+userId             String
+product            Product                  @relation(fields: [productId], references: [id])
+user               User                     @relation(fields: [userId], references: [id])
+paymentMode        paymentoption
+payment            paymentStatus            
 }
 
 enum categoryType {
@@ -50,3 +77,16 @@ enum sizesOption {
   extralarge
   doubleextralarge
 }
+
+enum paymentoption {
+  cashondelivery
+  online
+}
+
+enum paymentStatus{
+  completed 
+  failure 
+  notyet
+}
+
+

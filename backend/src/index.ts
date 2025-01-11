@@ -1,8 +1,9 @@
 import express, { Application, Request, Response } from "express";
-import { product } from "./routes/product";
-
 import cors from "cors";
+
+import { product } from "./routes/product";
 import { user } from "./routes/user";
+import { cart } from "./routes/cart";
 
 const app: Application = express();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use("/api/v1/product", product);
 
 app.use("/api/v1/user", user);
+
+app.use("/api/v1/cart", cart);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Welcome to Express & TypeScript Server" });

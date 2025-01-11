@@ -4,3 +4,8 @@ export type signupType = {
   name: string;
   image?: string;
 };
+
+export type loginType = {
+  email: string;
+  password: string;
+};
