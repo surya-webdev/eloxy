@@ -4,6 +4,7 @@ import cors from "cors";
 import { product } from "./routes/product";
 import { user } from "./routes/user";
 import { cart } from "./routes/cart";
+import { order } from "./routes/order";
 
 const app: Application = express();
 
@@ -17,6 +18,8 @@ app.use("/api/v1/product", product);
 app.use("/api/v1/user", user);
 
 app.use("/api/v1/cart", cart);
+
+app.use("/api/v1/order", order);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Welcome to Express & TypeScript Server" });

@@ -9,3 +9,7 @@ export type loginType = {
   email: string;
   password: string;
 };
+
+export type response = {
+  id: string;
+};
